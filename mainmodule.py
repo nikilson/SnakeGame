@@ -1,10 +1,15 @@
 import SnakeGame
 def mainmenu():
 	import pygame
+	from playsound import playsound
 	global screen_x, screen_y, bgimg, snk, font, screen, keys, mouse, but1status
 	screen_x = 600
 	screen_y = 600
 	pygame.init()
+	pygame.mixer.init()
+	pygame.mixer.music.load('music.mp3')
+	pygame.mixer.music.set_volume(0.9)
+	pygame.mixer.music.play()
 	bgimg = pygame.image.load('back.jpg')
 	snk =  pygame.image.load('snake.png')
 	font = pygame.font.Font('freesansbold.ttf', 32)

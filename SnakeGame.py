@@ -3,6 +3,9 @@ def main():
 	import pygame
 	from random import randint
 	pygame.init()
+	pygame.mixer.init()
+	pygame.mixer.music.load('eating.mp3')
+	pygame.mixer.music.set_volume(1)
 	global lentail, status, xtail, ytail, x, y, screen_x, screen_y, screen, score
 	global apple, xf, yf, keys, live, but1status, mouse
 	screen_x = 600
@@ -31,21 +34,21 @@ def main():
 		xcent = (x * 30) -15
 		ycent = (y * 30) -15
 		if status == "up":
-			ycent = ycent -8
-			point1 = (xcent-4, ycent)
-			point2 = (xcent+4, ycent)
+			ycent = ycent -7
+			point1 = (xcent-6, ycent)
+			point2 = (xcent+6, ycent)
 		elif status == "down":
-			ycent = ycent +8
-			point1 = (xcent-4, ycent)
-			point2 = (xcent+4, ycent)
+			ycent = ycent +7
+			point1 = (xcent-6, ycent)
+			point2 = (xcent+6, ycent)
 		elif status == "right":
-			xcent = xcent +8
-			point1 = (xcent, ycent-4)
-			point2 = (xcent, ycent+4)
+			xcent = xcent +7
+			point1 = (xcent, ycent-6)
+			point2 = (xcent, ycent+6)
 		elif status == "left":
-			xcent = xcent -8
-			point1 = (xcent, ycent+4)
-			point2 = (xcent, ycent-4)
+			xcent = xcent -7
+			point1 = (xcent, ycent+6)
+			point2 = (xcent, ycent-6)
 		pygame.draw.circle(screen, (0,0,0), point1, radius)
 		pygame.draw.circle(screen, (0,0,0), point2, radius)
 	def showText(pos = (10, 10)):
@@ -146,6 +149,7 @@ def main():
 		if (xf == x) and (yf == y):
 			xf, yf = randnums()
 			addatail()
+			pygame.mixer.music.play()
 			score += 10
 	def checklive():
 		global x, y, xtail, ytail, lentail, live, vel
@@ -160,6 +164,9 @@ def main():
 				rectBox( width = 250, height = 60, xpos = (screen_x//2-115), ypos = (screen_y//2)+85)
 				main_text = font.render("Main Menu", True, 'black')
 				screen.blit(main_text, ((screen_x//2)-80, (screen_y //2)+100))
+				pygame.mixer.music.load('music.mp3')
+				#pygame.mixer.music.set_volume(1)
+				#pygame.mixer.music.play()
 				#sleep(20)
 				#quit()
 			else:
@@ -218,11 +225,11 @@ def main():
 	    mouse = pygame.mouse.get_pos()
 	    #drawLines()
 	    showText()
-	    eyes()
 	    food()
 	    maingame()
 	    collision()
 	    tailMov()
+	    eyes()
 	    checklive()
 	    pygame.display.update()
 #if __name__ == '__main__':
