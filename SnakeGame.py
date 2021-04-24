@@ -1,11 +1,10 @@
+import mainmodule
 def main():
 	import pygame
 	from random import randint
-	#from math import sqrt
-	from time import sleep
 	pygame.init()
 	global lentail, status, xtail, ytail, x, y, screen_x, screen_y, screen, score
-	global apple, xf, yf, keys, live
+	global apple, xf, yf, keys, live, but1status, mouse
 	screen_x = 600
 	screen_y = 600
 	bgimg = pygame.image.load('back.jpg')
@@ -55,6 +54,21 @@ def main():
 	    #showSpeed = font.render("Speed : " + speedinkm, True, '#FFE77AFF')
 	    screen.blit(showScore, pos)
 	    #screen.blit(showSpeed, (10, 50))
+	def rectBox(width, height, xpos, ypos):
+		global mouse, screen, but1status
+		xpos2 = xpos + width
+		ypos2 = ypos + height
+		button = pygame.Surface((width, height))
+		button.fill((255,255,255))
+		if ((mouse[0] < xpos2) and (mouse[0] > xpos) and (mouse[1] < ypos2) and (mouse[1] > ypos)):
+			button.set_alpha(150)
+			but1status = True
+			#pygame.draw.rect(screen,(255, 255, 255, 200),(xpos, ypos, width, height))
+		else:
+			button.set_alpha(100)
+			but1status = False
+		screen.blit(button, (xpos, ypos))
+			#pygame.draw.rect(screen,(255, 155, 255, 100), (xpos, ypos, width, height))
 	def xyvel():
 		global status
 		if status =="up":
@@ -138,10 +152,14 @@ def main():
 		for l in range(1, lentail):
 			if (x==xtail[l]) and (y==ytail[l]):
 				live = "stop"
-				showText(((screen_x//4), (screen_y //2)-30))
-				showover = font1.render("Game Over!" + str(score), True, 'red')
-				screen.blit(showover, ((screen_x//4)-30, (screen_y //2)+30))
+				your_text = font.render("You Score : " + str(score), True, 'white')
+				screen.blit(your_text, ((screen_x//4)+50, (screen_y //2)-200))
+				showover = font1.render("Game Over!", True, 'red')
+				screen.blit(showover, ((screen_x//4), (screen_y //2)-80))
 				vel = 0
+				rectBox( width = 250, height = 60, xpos = (screen_x//2-115), ypos = (screen_y//2)+85)
+				main_text = font.render("Main Menu", True, 'black')
+				screen.blit(main_text, ((screen_x//2)-80, (screen_y //2)+100))
 				#sleep(20)
 				#quit()
 			else:
@@ -179,9 +197,9 @@ def main():
 				x = 0
 			x += vel
 		pygame.draw.rect(screen, "orange", ((x*30)-29, (y*30)-29, 29, 29))
-	ScreenStatus = True
+	ScreenStatus1 = True
 	clock = pygame.time.Clock()
-	while ScreenStatus:
+	while ScreenStatus1:
 	    #pygame.time.get_ticks()
 	    #delay = 100 - int(score * 0.1)
 	    ticktime = 4 + int(score * 0.015)
@@ -189,10 +207,15 @@ def main():
 	    clock.tick(ticktime)
 	    for event in pygame.event.get():
 	        if event.type == pygame.QUIT:
-	            ScreenStatus = False
+	            ScreenStatus1 = False
+	        if event.type == pygame.MOUSEBUTTONDOWN:
+	        	if but1status == True:
+	        		mainmodule.mainmenu()
+	        		ScreenStatus1 = False
 	    keys = pygame.key.get_pressed()
 	    screen.fill((0, 0, 0))
 	    screen.blit(bgimg, (0, 0))
+	    mouse = pygame.mouse.get_pos()
 	    #drawLines()
 	    showText()
 	    eyes()
@@ -202,5 +225,5 @@ def main():
 	    tailMov()
 	    checklive()
 	    pygame.display.update()
-if __name__ == '__main__':
-	main()
+#if __name__ == '__main__':
+#	main()
