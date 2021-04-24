@@ -7,6 +7,8 @@ screen_x = 600
 screen_y = 600
 bgimg = pygame.image.load('back.jpg')
 bgimg = pygame.transform.scale(bgimg, (screen_x ,screen_y))
+apple = pygame.image.load('apple.png')
+apple = pygame.transform.scale(apple, (30 ,30))
 font = pygame.font.Font('freesansbold.ttf', 32)
 vel = 1
 score = 0
@@ -64,8 +66,9 @@ def randnums():
 	return xrand, yrand
 xf, yf = randnums()
 def food(screen = screen):
-	global xf, yf
-	pygame.draw.rect(screen, "red", ((xf*30)-30, (yf*30)-30, 30, 30))
+	global xf, yf, apple
+	#pygame.draw.rect(screen, "red", ((xf*30)-30, (yf*30)-30, 30, 30))
+	screen.blit(apple, ((xf*30)-30, (yf*30)-30))
 def drawLines():
 	global screen, screen_x, screen_y
 	numXlines = screen_x // 30
@@ -73,9 +76,9 @@ def drawLines():
 	#screen_x = numXlines * 30
 	#screen_y = numYlines * 30
 	for xl in range(numYlines):
-		pygame.draw.line(screen, "white", ( 0, xl*30), (screen_x, xl*30))
+		pygame.draw.line(screen, "green", ( 0, xl*30), (screen_x, xl*30))
 	for yl in range(numXlines):
-		pygame.draw.line(screen, "white", ( yl*30, 0), (yl*30, screen_y))
+		pygame.draw.line(screen, "green", ( yl*30, 0), (yl*30, screen_y))
 def tailMov():
 	global xtail, ytail, lentail, x, y
 	if live == "run":
@@ -124,19 +127,19 @@ def main():
 		else:
 			live = "stop"
 	if status == "up" and live == "run":
-		if y < 1:
+		if y < 2:
 			y = numYlines+1
 		y -= vel
 	if status == "down" and live == "run":
-		if y > numYlines:
+		if y > numYlines-1:
 			y = 0
 		y += vel
 	if status == "left" and live == "run":
-		if x < 1:
+		if x < 2:
 			x = numXlines+1
 		x -= vel
 	if status == "right" and live == "run":
-		if x > numYlines:
+		if x > numYlines-1:
 			x = 0
 		x += vel
 	pygame.draw.rect(screen, "yellow", ((x*30)-29, (y*30)-29, 29, 29))
@@ -152,7 +155,7 @@ while ScreenStatus:
     keys = pygame.key.get_pressed()
     screen.fill((0, 0, 0))
     screen.blit(bgimg, (0, 0))
-    #drawLines()
+    drawLines()
     showText()
     food()
     main()
